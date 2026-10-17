@@ -1,0 +1,295 @@
+/* --- 基础样式 --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'KaiTi';
+}
+
+body {
+    background-color: #0a0a0c;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    position: relative;
+    height: 420vh; 
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0c; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+/* =========================================
+   顶部悬浮导航栏 (放大版)
+   ========================================= */
+.top-nav {
+    position: fixed;
+    top: 30px; /* 稍微往下一点，更有呼吸感 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    /* 【修改】宽度从 400px 增加到 540px，撑开整体框架 */
+    width: 580px; 
+    max-width: 95vw;
+    /* 【修改】内边距增大 */
+    padding: 12px 24px; 
+    
+    background: transparent;
+    border: 1px solid transparent;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    border-radius: 100px;
+    z-index: 999;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.top-nav.scrolled {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.nav-group {
+    display: flex;
+    gap: 12px;
+}
+
+/* 【修改】按钮变大、字体变大 */
+.nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px; /* 按钮变胖 */
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #d1d1d1;
+    text-decoration: none;
+    font-size: 20px; /* 字体从 13px 改大 */
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px); /* 悬浮感更强 */
+}
+
+.nav-btn::after {
+    content: ' ↗';
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* 【修改】中间文字变大 */
+.nav-center {
+    color: #fff;
+    font-size: 20px; /* 字体从 14px 改大 */
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+    padding: 0 15px;
+}
+
+.nav-center .highlight {
+    color: #f6e05e;
+    font-weight: 700;
+}
+
+/* --- 首屏居中布局 --- */
+.hero {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* --- 入场动画 --- */
+.rise {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: riseUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation-delay: var(--rd, 0s);
+}
+
+@keyframes riseUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 首屏文本样式 --- */
+.hero-meta { font-size: 15px; color: #888; letter-spacing: 2px; margin-bottom: 20px; }
+.hero-title { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 1.2; letter-spacing: -1px; }
+.hero-title em {
+    font-style: normal;
+    background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+}
+
+.scribble { position: absolute; left: 0; bottom: -10px; width: 100%; height: 20px; overflow: visible; }
+.scribble path { stroke: #4facfe; stroke-width: 2.5; stroke-linecap: round; }
+.hero-sub { margin-top: 30px; font-size: clamp(1rem, 2vw, 1.2rem); color: #aaa; font-weight: 300; }
+
+/* --- 底部提示 --- */
+.hero-go { position: absolute; bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: #666; font-size: 15px; }
+.go-line { width: 1px; height: 40px; background: linear-gradient(to bottom, #666, transparent); animation: flowDown 2s infinite; }
+
+@keyframes flowDown {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* --- 流星本体 --- */
+#shooting-star {
+    position: absolute;
+    width: 2px; 
+    height: 120px; 
+    background: linear-gradient(to top, #ffffff, #00f2fe 15%, rgba(79, 172, 254, 0) 100%);
+    border-radius: 50% 50% 0 0;
+    box-shadow: 0 0 10px 1px #00f2fe, 0 0 20px 4px rgba(79, 172, 254, 0.4);
+    transform-origin: center center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    will-change: transform, top, left, opacity;
+    transition: opacity 0.3s ease;
+}
+
+#sky-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* --- 经历时间线 --- */
+.timeline {
+    position: absolute;
+    top: 100vh;
+    width: 100%;
+    height: 320vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 10;
+    padding: 50px 0;
+}
+
+.timeline-item {
+    width: 80%;
+    max-width: 550px;
+    display: flex;
+    align-items: center;
+    opacity: 0; 
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: auto;
+}
+
+.timeline-item:nth-child(odd) { margin-right: auto; flex-direction: row-reverse; text-align: right; }
+.timeline-item:nth-child(even) { margin-left: auto; }
+
+.year {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    min-width: 150px;
+    padding: 0 20px;
+    transition: all 0.5s;
+}
+
+.content {
+    background: rgba(15, 15, 20, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    flex: 1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s;
+}
+
+.content:hover {
+    border-color: rgba(79, 172, 254, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(79, 172, 254, 0.15);
+}
+
+.content h3 { font-size: 1.2rem; color: #fff; margin-bottom: 10px; letter-spacing: 1px; }
+.content p { font-size: 0.95rem; color: #999; line-height: 1.6; }
+
+.timeline-item:nth-child(odd) .content h3,
+.timeline-item:nth-child(odd) .content p { text-align: right; }
+
+.timeline-item.show { opacity: 1; transform: translateY(0); }
+.timeline-item.show .year {
+    color: #fff;
+    -webkit-text-stroke: 1px transparent;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* --- 左下角文字 --- */
+.footer-text {
+    position: fixed;
+    bottom: 60px;
+    left: 60px;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: #ddd;
+    letter-spacing: 2px;
+    font-weight: 500;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.footer-text.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.footer-text .gradient {
+    background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+/* --- 响应式：手机端自动缩小，防止超出屏幕 --- */
+@media (max-width: 600px) { 
+    .top-nav { 
+        width: 95%; 
+        padding: 8px 12px; 
+        top: 15px;
+    }
+    .nav-center { display: none; } /* 手机屏幕太小，隐藏中间文字 */
+    .nav-btn { 
+        font-size: 13px; 
+        padding: 8px 15px; 
+    }
+    .footer-text { left: 30px; bottom: 40px; font-size: 1rem; }
+}
